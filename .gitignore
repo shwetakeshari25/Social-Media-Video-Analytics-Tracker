@@ -1,0 +1,30 @@
+# Dependency directories
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Environment files (contains secrets, do not commit!)
+.env
+backend/.env
+frontend/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Production build outputs
+dist/
+frontend/dist/
+
+# IDE/Editor folders
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS metadata files
+.DS_Store
+Thumbs.db

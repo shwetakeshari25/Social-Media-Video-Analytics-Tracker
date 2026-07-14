@@ -1,0 +1,444 @@
+{
+  "users": [
+    {
+      "id": "1783944584128",
+      "username": "shwetakeshrwani92@gmail.com",
+      "passwordHash": "$2a$10$Grhq2QtlD63J2vjKaWBoXORa4GPOpETOhTB8VIADXaTSgW5bbl/MW"
+    },
+    {
+      "id": "1783965819207",
+      "username": "shwetakeshrwani@gmail.com",
+      "passwordHash": "$2a$10$e.zbxFajhr.7FovlUbdozO6dbU.q93Or8oy1.5ujZaPq/bWngRmPq"
+    },
+    {
+      "id": "1783967527789",
+      "username": "happykeshawani@gmail.com",
+      "passwordHash": "$2a$10$69.XqDvgJq/yQYe7H8lMP.Di4BjBKSBxDYvPVZG5yqY4IiqK/NHRe"
+    }
+  ],
+  "videos": [
+    {
+      "id": "1783944958687",
+      "addedAt": "2026-07-13T12:15:58.687Z",
+      "userId": "1783944584128",
+      "url": "https://www.instagram.com/instagram/reel/DadSlv5SMn1/",
+      "platform": "Web",
+      "videoId": "web-5jipnvv",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 26966,
+      "likes": 1348,
+      "comments": 134,
+      "shares": 67
+    },
+    {
+      "id": "1783965994492",
+      "addedAt": "2026-07-13T18:06:34.493Z",
+      "userId": "1783965819207",
+      "url": "https://youtu.be/HskAGu0XL3c?si=lNaJY1vJfpaPm7j4",
+      "platform": "YouTube",
+      "videoId": "HskAGu0XL3c",
+      "title": "I found my DELETED Korean Convenience Store video from 5 years ago... 😭",
+      "thumbnailUrl": "https://i.ytimg.com/vi/HskAGu0XL3c/mqdefault.jpg",
+      "views": 396349,
+      "likes": 18124,
+      "comments": 1593,
+      "shares": 2174
+    },
+    {
+      "id": "1783965995737",
+      "addedAt": "2026-07-13T18:06:35.738Z",
+      "userId": "1783965819207",
+      "url": "https://youtu.be/vOWIL7OZ28U?si=8tqxrvVqRm9YuPNt",
+      "platform": "YouTube",
+      "videoId": "vOWIL7OZ28U",
+      "title": "Graph coloring problem using backtracking in DAA| problem -3",
+      "thumbnailUrl": "https://i.ytimg.com/vi/vOWIL7OZ28U/mqdefault.jpg",
+      "views": 25154,
+      "likes": 0,
+      "comments": 20,
+      "shares": 0
+    },
+    {
+      "id": "1783965997061",
+      "addedAt": "2026-07-13T18:06:37.061Z",
+      "userId": "1783965819207",
+      "url": "https://youtu.be/yAWSAF3BPsM?si=kz9pk5Q9DQ0prQIN",
+      "platform": "YouTube",
+      "videoId": "yAWSAF3BPsM",
+      "title": "Mind Fresh Lo-Fi Mashup 2025 🪷 Arijit Singh Love Songs | Slowed + Reverb | Bollywood Jukebox | EP123",
+      "thumbnailUrl": "https://i.ytimg.com/vi/yAWSAF3BPsM/mqdefault.jpg",
+      "views": 2551552,
+      "likes": 14511,
+      "comments": 383,
+      "shares": 1741
+    },
+    {
+      "id": "1783966505779",
+      "addedAt": "2026-07-13T18:15:05.779Z",
+      "userId": "1783965819207",
+      "url": "https://www.instagram.com/instagram/reel/Dadl7PnvJg6/",
+      "platform": "Web",
+      "videoId": "web-lvo5k6w",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 52039,
+      "likes": 2601,
+      "comments": 260,
+      "shares": 130
+    },
+    {
+      "id": "1783966506227",
+      "addedAt": "2026-07-13T18:15:06.227Z",
+      "userId": "1783965819207",
+      "url": "https://www.instagram.com/instagram/reel/DadSlv5SMn1/",
+      "platform": "Web",
+      "videoId": "web-d8kjvea",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 5578,
+      "likes": 278,
+      "comments": 27,
+      "shares": 13
+    },
+    {
+      "id": "1783966506691",
+      "addedAt": "2026-07-13T18:15:06.691Z",
+      "userId": "1783965819207",
+      "url": "https://www.instagram.com/instagram/reel/DaTSSukB-Lb/",
+      "platform": "Web",
+      "videoId": "web-sfxo1fs",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 34255,
+      "likes": 1712,
+      "comments": 171,
+      "shares": 85
+    },
+    {
+      "id": "1783966507155",
+      "addedAt": "2026-07-13T18:15:07.155Z",
+      "userId": "1783965819207",
+      "url": "https://www.instagram.com/instagram/reel/DaSoaKVMWPr/",
+      "platform": "Web",
+      "videoId": "web-1w7lmck",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 64190,
+      "likes": 3209,
+      "comments": 320,
+      "shares": 160
+    },
+    {
+      "id": "1783967560459",
+      "addedAt": "2026-07-13T18:32:40.459Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaS-NSGg_-X/",
+      "platform": "Web",
+      "videoId": "web-1u8ggfy",
+      "title": "[Web] How to Build a High-Performing Team #1",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 63757,
+      "likes": 3187,
+      "comments": 318,
+      "shares": 159
+    },
+    {
+      "id": "1783967565531",
+      "addedAt": "2026-07-13T18:32:45.531Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaSoaKVMWPr/",
+      "platform": "Web",
+      "videoId": "web-cpkzxzq",
+      "title": "[Web] How to Write Scripts That Hold Attention #2",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 89789,
+      "likes": 4489,
+      "comments": 448,
+      "shares": 224
+    },
+    {
+      "id": "1783967570610",
+      "addedAt": "2026-07-13T18:32:50.610Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaQu2LjPIKF/",
+      "platform": "Web",
+      "videoId": "web-nasm17n",
+      "title": "[Web] Building in Public: Behind the Scenes #3",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 89288,
+      "likes": 4464,
+      "comments": 446,
+      "shares": 223
+    },
+    {
+      "id": "1783967848736",
+      "addedAt": "2026-07-13T18:37:28.737Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaS-NSGg_-X/",
+      "platform": "Web",
+      "videoId": "web-r40jsdl",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 2970000,
+      "likes": 297000,
+      "comments": 8015,
+      "shares": 29700
+    },
+    {
+      "id": "1783968840752",
+      "addedAt": "2026-07-13T18:54:00.753Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaS-NSGg_-X/",
+      "platform": "Web",
+      "videoId": "web-2di09p9",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 2970000,
+      "likes": 297000,
+      "comments": 8016,
+      "shares": 29700
+    },
+    {
+      "id": "1783968841976",
+      "addedAt": "2026-07-13T18:54:01.976Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaSoaKVMWPr/",
+      "platform": "Web",
+      "videoId": "web-9bz27b8",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 980000,
+      "likes": 98000,
+      "comments": 4720,
+      "shares": 9800
+    },
+    {
+      "id": "1783968842917",
+      "addedAt": "2026-07-13T18:54:02.917Z",
+      "userId": "1783967527789",
+      "url": "https://www.instagram.com/instagram/reel/DaQu2LjPIKF/",
+      "platform": "Web",
+      "videoId": "web-nyv22cm",
+      "title": "Instagram",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 1530000,
+      "likes": 153000,
+      "comments": 7583,
+      "shares": 15300
+    },
+    {
+      "id": "1783968966134",
+      "addedAt": "2026-07-13T18:56:06.134Z",
+      "userId": "1783967527789",
+      "url": "https://youtu.be/vHi_28S_rtI?si=7SA9PqHmqrdSWfXq",
+      "platform": "YouTube",
+      "videoId": "vHi_28S_rtI",
+      "title": "How to Speak English Fluently — Step by Step | Easy English for Beginners",
+      "thumbnailUrl": "https://i.ytimg.com/vi/vHi_28S_rtI/mqdefault.jpg",
+      "views": 57435,
+      "likes": 3033,
+      "comments": 152,
+      "shares": 363
+    },
+    {
+      "id": "1783968967160",
+      "addedAt": "2026-07-13T18:56:07.160Z",
+      "userId": "1783967527789",
+      "url": "https://youtu.be/KBuWMSEOI2g?si=Z-9zWKwUb7LAtsKx",
+      "platform": "YouTube",
+      "videoId": "KBuWMSEOI2g",
+      "title": "I Didn&#39;t Eat Sugar for a Year… Here&#39;s What I Learned⭐",
+      "thumbnailUrl": "https://i.ytimg.com/vi/KBuWMSEOI2g/mqdefault.jpg",
+      "views": 5,
+      "likes": 0,
+      "comments": 0,
+      "shares": 0
+    },
+    {
+      "id": "1783968968428",
+      "addedAt": "2026-07-13T18:56:08.428Z",
+      "userId": "1783967527789",
+      "url": "https://youtu.be/1iOVH1AiWQ8?si=WPMztOVDvrGT2VOt",
+      "platform": "YouTube",
+      "videoId": "1iOVH1AiWQ8",
+      "title": "[God of Fashion] Seoul Style by Asia Lab | with Anushka Sen, Gentle Monster, Mardi Mercredi &amp; OJOS",
+      "thumbnailUrl": "https://i.ytimg.com/vi/1iOVH1AiWQ8/mqdefault.jpg",
+      "views": 424397,
+      "likes": 4207,
+      "comments": 132,
+      "shares": 504
+    },
+    {
+      "id": "1783968969420",
+      "addedAt": "2026-07-13T18:56:09.420Z",
+      "userId": "1783967527789",
+      "url": "https://youtu.be/ABp_Kbw07s0?si=4C5s0vZtgjtIOAYV",
+      "platform": "YouTube",
+      "videoId": "ABp_Kbw07s0",
+      "title": "Dopamine Loading | How Toppers Get Addicted to Studying🔥",
+      "thumbnailUrl": "https://i.ytimg.com/vi/ABp_Kbw07s0/mqdefault.jpg",
+      "views": 159849,
+      "likes": 6315,
+      "comments": 177,
+      "shares": 757
+    },
+    {
+      "id": "1784037432608",
+      "addedAt": "2026-07-14T13:57:12.609Z",
+      "userId": "1783944584128",
+      "url": "https://youtu.be/puNcvhy1twY?si=KGMrTeF6J5MpvwA7",
+      "platform": "YouTube",
+      "videoId": "puNcvhy1twY",
+      "title": "How to Crack CUET PG History 2027 | JNU History Rank 02 Strategy| HCU History Rank 01 | Toppers Talk",
+      "thumbnailUrl": "https://i.ytimg.com/vi/puNcvhy1twY/mqdefault.jpg",
+      "views": 261,
+      "likes": 16,
+      "comments": 3,
+      "shares": 1
+    },
+    {
+      "id": "1784037436505",
+      "addedAt": "2026-07-14T13:57:16.506Z",
+      "userId": "1783944584128",
+      "url": "https://youtu.be/Ib3tYxLCPa8?si=DhWvGDRW5gm1iZZ9",
+      "platform": "YouTube",
+      "videoId": "Ib3tYxLCPa8",
+      "title": "How I Got a Thicker Ponytail in 30 Days 😱 | Hair Growth Transformation#HairGrowth #HairCare #Hair",
+      "thumbnailUrl": "https://i.ytimg.com/vi/Ib3tYxLCPa8/mqdefault.jpg",
+      "views": 118131,
+      "likes": 2169,
+      "comments": 55,
+      "shares": 260
+    },
+    {
+      "id": "1784037438133",
+      "addedAt": "2026-07-14T13:57:18.133Z",
+      "userId": "1783944584128",
+      "url": "https://www.youtube.com/live/BVM_x2dWsgk?si=8_vFBu5upqawvDRi",
+      "platform": "Web",
+      "videoId": "web-6ao3mqy",
+      "title": "HPCL &amp; HRRL Exam 2026 | Chemical Engineering | Paper Leak Series 01 | Degree &amp; Diploma",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=360&auto=format&fit=crop&q=60",
+      "views": 74631,
+      "likes": 3731,
+      "comments": 373,
+      "shares": 186
+    }
+  ],
+  "scripts": [
+    {
+      "id": "1783966081619",
+      "createdAt": "2026-07-13T18:08:01.619Z",
+      "userId": "1783965819207",
+      "videoIds": [
+        "1783965994492",
+        "1783965995737"
+      ],
+      "length": "3 min",
+      "scriptData": {
+        "title": "How to Hijack the YouTube Algorithm (3 min Script)",
+        "bestHook": "🚀 \"If you are still trying to grow on YouTube in 2026, stop scrolling immediately. Here is the exact strategy that generated 421k views on the top trending posts...\"",
+        "introduction": "Most creators tell you to post 3 times a day. But they are hiding the truth. The secret isn't quantity; it's structure. We analyzed top-performing videos like \"I found my DELETED Korean Convenience Store video from 5 years ago... 😭\" and found a shocking pattern. Over the next few minutes, I am going to show you exactly how to replicate these results step-by-step.",
+        "mainContent": "Here are the 3 pillars of viral retention:\n1. The 3-Second Pattern Interruption: Use sudden text styling, B-roll, or sound effects within the first 180 frames. Look at YouTube videos with high metrics—they never start with an introduction; they start in the middle of the action.\n2. The Tension Loop: Ask a question in the first 10 seconds, but do not answer it until the final 10% of the video. Keep the audience curiosity peaked.\n3. Contrast-Driven Editing: Alternate between high-energy claims and calm, analytical proofs. This keeps the dopamine loop active in the viewer's brain.",
+        "story": "Think about how \"Graph coloring problem using backtracking in DAA| problem -3\" hooks you. They start with a problem you face every single day. They tell you a story about how they failed 99 times before discovering one small adjustment. By positioning yourself as the guide who survived the struggle, you instantly build trust.",
+        "callToAction": "If you want my complete checklist of these structural patterns for YouTube, comment the word 'VIRAL' below, and I will DM you the link immediately.",
+        "ending": "Remember, the algorithm doesn't favor accounts; it favors retention. Keep them watching, and the system does the rest. See you in the next video.",
+        "caption": "🔥 STOP SCROLLING! The algorithm changed, and here is how you exploit it in 2026.\n  \nI analyzed videos with over 421k combined views (including \"I found my DELETED Korean Convenience Store video from 5 years ago... 😭\"). Here are the exact frameworks they use to hold attention:\n\n✅ The 3-Second Frame Pattern\n✅ The Retention Loop Formula\n✅ Dopamine-Triggered Transitions\n\nRead the script, apply it to your next video, and see the difference.\n\n👇 What is your biggest struggle with content? Let me know!",
+        "hashtags": "#contentcreation #socialmediamarketing #growontiktok #youtubeorganic #instagramreels #viralgrowth #creators #algorithm"
+      },
+      "title": "How to Hijack the YouTube Algorithm (3 min Script)"
+    },
+    {
+      "id": "1783968883286",
+      "createdAt": "2026-07-13T18:54:43.286Z",
+      "userId": "1783967527789",
+      "videoIds": [
+        "1783968840752",
+        "1783968841976",
+        "1783968842917"
+      ],
+      "length": "3 min",
+      "scriptData": {
+        "title": "How to Hijack the Web Algorithm (3 min Script)",
+        "bestHook": "🚀 \"If you are still trying to grow on Web in 2026, stop scrolling immediately. Here is the exact strategy that generated 5480k views on the top trending posts...\"",
+        "introduction": "Most creators tell you to post 3 times a day. But they are hiding the truth. The secret isn't quantity; it's structure. We analyzed top-performing videos like \"Instagram\" and found a shocking pattern. Over the next few minutes, I am going to show you exactly how to replicate these results step-by-step.",
+        "mainContent": "Here are the 3 pillars of viral retention:\n1. The 3-Second Pattern Interruption: Use sudden text styling, B-roll, or sound effects within the first 180 frames. Look at YouTube videos with high metrics—they never start with an introduction; they start in the middle of the action.\n2. The Tension Loop: Ask a question in the first 10 seconds, but do not answer it until the final 10% of the video. Keep the audience curiosity peaked.\n3. Contrast-Driven Editing: Alternate between high-energy claims and calm, analytical proofs. This keeps the dopamine loop active in the viewer's brain.",
+        "story": "Think about how \"Instagram\" hooks you. They start with a problem you face every single day. They tell you a story about how they failed 99 times before discovering one small adjustment. By positioning yourself as the guide who survived the struggle, you instantly build trust.",
+        "callToAction": "If you want my complete checklist of these structural patterns for Web, comment the word 'VIRAL' below, and I will DM you the link immediately.",
+        "ending": "Remember, the algorithm doesn't favor accounts; it favors retention. Keep them watching, and the system does the rest. See you in the next video.",
+        "caption": "🔥 STOP SCROLLING! The algorithm changed, and here is how you exploit it in 2026.\n  \nI analyzed videos with over 5480k combined views (including \"Instagram\"). Here are the exact frameworks they use to hold attention:\n\n✅ The 3-Second Frame Pattern\n✅ The Retention Loop Formula\n✅ Dopamine-Triggered Transitions\n\nRead the script, apply it to your next video, and see the difference.\n\n👇 What is your biggest struggle with content? Let me know!",
+        "hashtags": "#contentcreation #socialmediamarketing #growontiktok #youtubeorganic #instagramreels #viralgrowth #creators #algorithm"
+      },
+      "title": "How to Hijack the Web Algorithm (3 min Script)"
+    },
+    {
+      "id": "1783969019469",
+      "createdAt": "2026-07-13T18:56:59.469Z",
+      "userId": "1783967527789",
+      "videoIds": [
+        "1783968967160",
+        "1783968966134",
+        "1783968969420"
+      ],
+      "length": "1 min",
+      "scriptData": {
+        "title": "How to Hijack the YouTube Algorithm (1 min Script)",
+        "bestHook": "🚀 \"If you are still trying to grow on YouTube in 2026, stop scrolling immediately. Here is the exact strategy that generated 217k views on the top trending posts...\"",
+        "introduction": "Most creators tell you to post 3 times a day. But they are hiding the truth. The secret isn't quantity; it's structure. We analyzed top-performing videos like \"How to Speak English Fluently — Step by Step | Easy English for Beginners\" and found a shocking pattern. Over the next few minutes, I am going to show you exactly how to replicate these results step-by-step.",
+        "mainContent": "Here are the 3 pillars of viral retention:\n1. The 3-Second Pattern Interruption: Use sudden text styling, B-roll, or sound effects within the first 180 frames. Look at YouTube videos with high metrics—they never start with an introduction; they start in the middle of the action.\n2. The Tension Loop: Ask a question in the first 10 seconds, but do not answer it until the final 10% of the video. Keep the audience curiosity peaked.\n3. Contrast-Driven Editing: Alternate between high-energy claims and calm, analytical proofs. This keeps the dopamine loop active in the viewer's brain.",
+        "story": "Think about how \"I Didn&#39;t Eat Sugar for a Year… Here&#39;s What I Learned⭐\" hooks you. They start with a problem you face every single day. They tell you a story about how they failed 99 times before discovering one small adjustment. By positioning yourself as the guide who survived the struggle, you instantly build trust.",
+        "callToAction": "If you want my complete checklist of these structural patterns for YouTube, comment the word 'VIRAL' below, and I will DM you the link immediately.",
+        "ending": "Remember, the algorithm doesn't favor accounts; it favors retention. Keep them watching, and the system does the rest. See you in the next video.",
+        "caption": "🔥 STOP SCROLLING! The algorithm changed, and here is how you exploit it in 2026.\n  \nI analyzed videos with over 217k combined views (including \"How to Speak English Fluently — Step by Step | Easy English for Beginners\"). Here are the exact frameworks they use to hold attention:\n\n✅ The 3-Second Frame Pattern\n✅ The Retention Loop Formula\n✅ Dopamine-Triggered Transitions\n\nRead the script, apply it to your next video, and see the difference.\n\n👇 What is your biggest struggle with content? Let me know!",
+        "hashtags": "#contentcreation #socialmediamarketing #growontiktok #youtubeorganic #instagramreels #viralgrowth #creators #algorithm"
+      },
+      "title": "How to Hijack the YouTube Algorithm (1 min Script)"
+    },
+    {
+      "id": "1784037516652",
+      "createdAt": "2026-07-14T13:58:36.652Z",
+      "userId": "1783944584128",
+      "videoIds": [
+        "1784037436505",
+        "1784037432608"
+      ],
+      "length": "1 min",
+      "scriptData": {
+        "title": "How to Hijack the YouTube Algorithm (1 min Script)",
+        "bestHook": "🚀 \"If you are still trying to grow on YouTube in 2026, stop scrolling immediately. Here is the exact strategy that generated 118k views on the top trending posts...\"",
+        "introduction": "Most creators tell you to post 3 times a day. But they are hiding the truth. The secret isn't quantity; it's structure. We analyzed top-performing videos like \"How to Crack CUET PG History 2027 | JNU History Rank 02 Strategy| HCU History Rank 01 | Toppers Talk\" and found a shocking pattern. Over the next few minutes, I am going to show you exactly how to replicate these results step-by-step.",
+        "mainContent": "Here are the 3 pillars of viral retention:\n1. The 3-Second Pattern Interruption: Use sudden text styling, B-roll, or sound effects within the first 180 frames. Look at YouTube videos with high metrics—they never start with an introduction; they start in the middle of the action.\n2. The Tension Loop: Ask a question in the first 10 seconds, but do not answer it until the final 10% of the video. Keep the audience curiosity peaked.\n3. Contrast-Driven Editing: Alternate between high-energy claims and calm, analytical proofs. This keeps the dopamine loop active in the viewer's brain.",
+        "story": "Think about how \"How I Got a Thicker Ponytail in 30 Days 😱 | Hair Growth Transformation#HairGrowth #HairCare #Hair\" hooks you. They start with a problem you face every single day. They tell you a story about how they failed 99 times before discovering one small adjustment. By positioning yourself as the guide who survived the struggle, you instantly build trust.",
+        "callToAction": "If you want my complete checklist of these structural patterns for YouTube, comment the word 'VIRAL' below, and I will DM you the link immediately.",
+        "ending": "Remember, the algorithm doesn't favor accounts; it favors retention. Keep them watching, and the system does the rest. See you in the next video.",
+        "caption": "🔥 STOP SCROLLING! The algorithm changed, and here is how you exploit it in 2026.\n  \nI analyzed videos with over 118k combined views (including \"How to Crack CUET PG History 2027 | JNU History Rank 02 Strategy| HCU History Rank 01 | Toppers Talk\"). Here are the exact frameworks they use to hold attention:\n\n✅ The 3-Second Frame Pattern\n✅ The Retention Loop Formula\n✅ Dopamine-Triggered Transitions\n\nRead the script, apply it to your next video, and see the difference.\n\n👇 What is your biggest struggle with content? Let me know!",
+        "hashtags": "#contentcreation #socialmediamarketing #growontiktok #youtubeorganic #instagramreels #viralgrowth #creators #algorithm"
+      },
+      "title": "How to Hijack the YouTube Algorithm (1 min Script)"
+    }
+  ],
+  "settings": {
+    "1783944584128": {
+      "apiKeys": {
+        "gemini": "",
+        "youtube": ""
+      },
+      "darkMode": false
+    },
+    "1783965819207": {
+      "apiKeys": {
+        "gemini": "",
+        "youtube": ""
+      },
+      "darkMode": false
+    },
+    "1783967527789": {
+      "apiKeys": {
+        "gemini": "",
+        "youtube": ""
+      },
+      "darkMode": false
+    }
+  }
+}
