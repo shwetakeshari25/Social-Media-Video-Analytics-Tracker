@@ -75,6 +75,16 @@ export const db = {
     }
     return null;
   },
+  updateVideo: (id, userId, updatedFields) => {
+    const data = readDB();
+    const index = data.videos.findIndex(v => v.id === id && v.userId === userId);
+    if (index !== -1) {
+      data.videos[index] = { ...data.videos[index], ...updatedFields };
+      writeDB(data);
+      return data.videos[index];
+    }
+    return null;
+  },
 
   // Script History Operations
   getScripts: (userId) => readDB().scripts.filter(s => s.userId === userId),
@@ -100,14 +110,16 @@ export const db = {
   // Settings Operations
   getSettings: (userId) => {
     const settings = readDB().settings;
-    return settings[userId] || { apiKeys: { gemini: '', youtube: '' }, darkMode: false };
+    return settings[userId] || { apiKeys: { gemini: '', youtube: '', scrapedo: '', rapidapi: '' }, darkMode: false };
   },
   saveSettings: (userId, userSettings) => {
     const data = readDB();
     data.settings[userId] = {
       apiKeys: {
         gemini: userSettings?.apiKeys?.gemini || '',
-        youtube: userSettings?.apiKeys?.youtube || ''
+        youtube: userSettings?.apiKeys?.youtube || '',
+        scrapedo: userSettings?.apiKeys?.scrapedo || '',
+        rapidapi: userSettings?.apiKeys?.rapidapi || ''
       },
       darkMode: !!userSettings?.darkMode
     };

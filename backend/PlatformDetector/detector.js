@@ -5,7 +5,7 @@ export function detectPlatform(url) {
   // YouTube Patterns
   const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\s]{11})/i;
   // Instagram Patterns
-  const instagramRegex = /instagram\.com\/(?:p|reel|tv)\/([a-zA-Z0-9_\-]+)/i;
+  const instagramRegex = /instagram\.com\/(?:[a-zA-Z0-9_\.]+\/)?(?:p|reel|tv)\/([a-zA-Z0-9_\-]+)/i;
   // LinkedIn Patterns
   const linkedinRegex = /linkedin\.com\/(?:posts|feed\/update\/urn:li:activity|video\/urn:li:ugcPost):?([0-9]+)/i;
   const linkedinFallback = /linkedin\.com\/[^\/]+\/([a-zA-Z0-9_\-]+)/i;

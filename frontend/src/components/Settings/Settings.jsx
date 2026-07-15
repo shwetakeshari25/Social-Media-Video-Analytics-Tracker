@@ -4,6 +4,8 @@ import { API_BASE_URL } from '../../config.js';
 export default function Settings({ onToggleDarkMode, isDarkMode }) {
   const [geminiKey, setGeminiKey] = useState('');
   const [youtubeKey, setYoutubeKey] = useState('');
+  const [scrapedoKey, setScrapedoKey] = useState('');
+  const [rapidapiKey, setRapidapiKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -22,6 +24,8 @@ export default function Settings({ onToggleDarkMode, isDarkMode }) {
           const data = await response.json();
           setGeminiKey(data.apiKeys?.gemini || '');
           setYoutubeKey(data.apiKeys?.youtube || '');
+          setScrapedoKey(data.apiKeys?.scrapedo || '');
+          setRapidapiKey(data.apiKeys?.rapidapi || '');
         }
       } catch (err) {
         console.error('Error fetching settings:', err);
@@ -47,7 +51,9 @@ export default function Settings({ onToggleDarkMode, isDarkMode }) {
         body: JSON.stringify({
           apiKeys: {
             gemini: geminiKey.trim(),
-            youtube: youtubeKey.trim()
+            youtube: youtubeKey.trim(),
+            scrapedo: scrapedoKey.trim(),
+            rapidapi: rapidapiKey.trim()
           },
           darkMode: isDarkMode
         })
@@ -78,7 +84,7 @@ export default function Settings({ onToggleDarkMode, isDarkMode }) {
         {/* Left Side: Keys Card */}
         <div className="card" style={styles.card}>
           <h3 style={styles.cardTitle}>🔑 API Connections</h3>
-          <p style={styles.cardDesc}>Save keys to enable real-time YouTube metadata fetching and advanced Gemini generative copy templates.</p>
+          <p style={styles.cardDesc}>Save keys to enable real-time YouTube & Instagram metadata fetching and advanced Gemini generative copy templates.</p>
           
           {message && <div style={styles.successAlert}>{message}</div>}
           {error && <div style={styles.errorAlert}>{error}</div>}
@@ -108,6 +114,32 @@ export default function Settings({ onToggleDarkMode, isDarkMode }) {
                 disabled={loading}
               />
               <span style={styles.inputTip}>Used to fetch real statistics (views, likes, comments) from YouTube URLs.</span>
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.label}>scrape.do API Token</label>
+              <input
+                type="password"
+                className="input-field"
+                placeholder="Enter scrape.do API Token..."
+                value={scrapedoKey}
+                onChange={(e) => setScrapedoKey(e.target.value)}
+                disabled={loading}
+              />
+              <span style={styles.inputTip}>Bypasses Instagram blocks to extract metrics from URL description. Copy "Your API Token" from scrape.do dashboard.</span>
+            </div>
+
+            <div style={styles.formGroup}>
+              <label style={styles.label}>Instagram Scraper API Key (RapidAPI)</label>
+              <input
+                type="password"
+                className="input-field"
+                placeholder="Enter RapidAPI Key..."
+                value={rapidapiKey}
+                onChange={(e) => setRapidapiKey(e.target.value)}
+                disabled={loading}
+              />
+              <span style={styles.inputTip}>Directly queries RapidAPI (Instagram Scraper by API-Dojo) for 100% exact live views, likes, and comments.</span>
             </div>
 
             <button type="submit" className="btn btn-primary" style={styles.saveBtn} disabled={loading}>

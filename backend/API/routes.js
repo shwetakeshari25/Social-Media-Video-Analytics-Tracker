@@ -141,6 +141,26 @@ router.delete('/videos/:id', authenticateToken, (req, res) => {
   }
 });
 
+// Update Video Metrics
+router.put('/videos/:id', authenticateToken, (req, res) => {
+  try {
+    const { views, likes, comments, shares, title } = req.body;
+    const updated = db.updateVideo(req.params.id, req.user.id, {
+      views: views !== undefined ? parseInt(views) : undefined,
+      likes: likes !== undefined ? parseInt(likes) : undefined,
+      comments: comments !== undefined ? parseInt(comments) : undefined,
+      shares: shares !== undefined ? parseInt(shares) : undefined,
+      title: title || undefined
+    });
+    if (!updated) {
+      return res.status(404).json({ error: 'Video not found or unauthorized.' });
+    }
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // --- SCRIPT GENERATOR ROUTES ---
 
@@ -156,18 +176,14 @@ router.post('/script/generate', authenticateToken, async (req, res) => {
     }
 
     // Generate script (Gemini + fallback)
-    const scriptContent = await generateScriptService(videoIds, length, req.user.id);
+    const result = await generateScriptService(videoIds, length, req.user.id);
 
-    // Save to Script History Database
-    const savedScript = db.addScript({
-      userId: req.user.id,
-      videoIds,
-      length,
-      scriptData: scriptContent,
-      title: scriptContent.title || `Viral Strategy Script - ${length}`
+    // Store only the analysis (temporarily if needed), not the generated script permanently.
+    // So we do not save the script using db.addScript.
+    res.status(201).json({
+      scriptData: result.script,
+      analysisData: result.analysis
     });
-
-    res.status(201).json(savedScript);
   } catch (error) {
     console.error('Error generating script:', error);
     res.status(500).json({ error: error.message });

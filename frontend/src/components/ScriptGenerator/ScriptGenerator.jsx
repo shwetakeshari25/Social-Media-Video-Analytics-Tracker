@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-export default function ScriptGenerator({ selectedIds, scriptLength, onBackToDashboard, scriptData, loading, error }) {
+export default function ScriptGenerator({ selectedIds, scriptLength, onBackToDashboard, scriptData, analysisData, loading, error }) {
   const [activeStep, setActiveStep] = useState(0);
   const [showScript, setShowScript] = useState(false);
   const [copySuccess, setCopySuccess] = useState('');
+  const [selectedAnalysisTab, setSelectedAnalysisTab] = useState(0);
 
   const loadingSteps = [
     'Reading Selected Videos...',
@@ -247,6 +248,116 @@ ${scriptData.hashtags}
     URL.revokeObjectURL(url);
   };
 
+  const renderAnalysisSection = () => {
+    if (!analysisData) return null;
+
+    const { individual = [], combined = {} } = analysisData;
+
+    return (
+      <div className="card animate-fade-in" style={styles.analysisCard}>
+        <h3 style={styles.analysisHeader}>📊 Video Intelligence & Analysis Summary</h3>
+        <p style={styles.analysisSub}>Detailed pattern extraction and individual insights from selected videos</p>
+
+        {/* Tab switcher */}
+        <div style={styles.tabBar}>
+          <button
+            onClick={() => setSelectedAnalysisTab(0)}
+            style={{
+              ...styles.tabButton,
+              borderBottomColor: selectedAnalysisTab === 0 ? 'var(--primary-color)' : 'transparent',
+              color: selectedAnalysisTab === 0 ? 'var(--primary-color)' : 'var(--text-secondary)',
+              fontWeight: selectedAnalysisTab === 0 ? '700' : '500'
+            }}
+          >
+            Combined Summary
+          </button>
+          {individual.map((ind, idx) => (
+            <button
+              key={idx}
+              onClick={() => setSelectedAnalysisTab(idx + 1)}
+              style={{
+                ...styles.tabButton,
+                borderBottomColor: selectedAnalysisTab === idx + 1 ? 'var(--primary-color)' : 'transparent',
+                color: selectedAnalysisTab === idx + 1 ? 'var(--primary-color)' : 'var(--text-secondary)',
+                fontWeight: selectedAnalysisTab === idx + 1 ? '700' : '500'
+              }}
+            >
+              Video #{idx + 1}
+            </button>
+          ))}
+        </div>
+
+        {/* Tab content */}
+        <div style={styles.tabContent}>
+          {selectedAnalysisTab === 0 ? (
+            <div style={styles.combinedAnalysisGrid}>
+              <div style={styles.analysisItem}>
+                <span style={styles.analysisItemLabel}>💡 Common Ideas & Topics</span>
+                <p style={styles.analysisItemValue}>{combined.commonIdeas}</p>
+              </div>
+              <div style={styles.analysisItem}>
+                <span style={styles.analysisItemLabel}>🎭 Content Style & Speaking Style</span>
+                <p style={styles.analysisItemValue}>{combined.contentStyle}</p>
+              </div>
+              <div style={styles.analysisItem}>
+                <span style={styles.analysisItemLabel}>👥 Target Audience Interest</span>
+                <p style={styles.analysisItemValue}>{combined.audienceInterest}</p>
+              </div>
+            </div>
+          ) : (
+            (() => {
+              const video = individual[selectedAnalysisTab - 1];
+              if (!video) return null;
+              return (
+                <div style={styles.individualAnalysisGrid}>
+                  <div style={{ gridColumn: '1 / -1', marginBottom: '8px' }}>
+                    <h4 style={{ margin: 0, color: 'var(--text-color)', fontSize: '15px' }}>{video.title}</h4>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Main Topic</span>
+                    <p style={styles.analysisItemValue}>{video.mainTopic}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Speaking Style</span>
+                    <p style={styles.analysisItemValue}>{video.speakingStyle}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Tone</span>
+                    <p style={styles.analysisItemValue}>{video.tone}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Audience Type</span>
+                    <p style={styles.analysisItemValue}>{video.audienceType}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Structure</span>
+                    <p style={styles.analysisItemValue}>{video.structure}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Key Points</span>
+                    <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-color)', fontSize: '14px' }}>
+                      {(video.keyPoints || []).map((pt, pIdx) => (
+                        <li key={pIdx} style={{ marginBottom: '4px' }}>{pt}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div style={{ ...styles.analysisItem, gridColumn: '1 / -1' }}>
+                    <span style={styles.analysisItemLabel}>Description</span>
+                    <p style={{ ...styles.analysisItemValue, fontSize: '13px', fontStyle: 'italic', color: 'var(--text-secondary)' }}>{video.description}</p>
+                  </div>
+                  <div style={{ ...styles.analysisItem, gridColumn: '1 / -1' }}>
+                    <span style={styles.analysisItemLabel}>Transcript (if available)</span>
+                    <p style={{ ...styles.analysisItemValue, fontSize: '13px', color: 'var(--text-secondary)' }}>{video.transcript}</p>
+                  </div>
+                </div>
+              );
+            })()
+          )}
+        </div>
+      </div>
+    );
+  };
+
   // 1. Error view
   if (error) {
     return (
@@ -344,14 +455,16 @@ ${scriptData.hashtags}
         </div>
       </div>
 
+      {renderAnalysisSection()}
+
       <div style={styles.scriptLayout}>
         {/* Left main script contents */}
         <div style={styles.mainScript}>
           {[
-            { key: 'bestHook', label: '🪝 Best Hook' },
+            { key: 'bestHook', label: '🪝 Hook' },
             { key: 'introduction', label: '👋 Introduction' },
             { key: 'mainContent', label: '📖 Main Content' },
-            { key: 'story', label: '💡 Story & Proof' },
+            { key: 'story', label: '💡 Examples & Case Study' },
             { key: 'callToAction', label: '📣 Call to Action' },
             { key: 'ending', label: '🚪 Sign-off Ending' }
           ].map((sec) => (
@@ -569,5 +682,71 @@ const styles = {
     padding: '12px 16px',
     borderRadius: 'var(--radius-md)',
     border: '1px solid var(--border-color)',
+  },
+  analysisCard: {
+    padding: '24px',
+    marginBottom: '28px',
+    border: '1px solid var(--border-color)',
+    boxShadow: '0 4px 15px rgba(62, 49, 37, 0.03)',
+  },
+  analysisHeader: {
+    fontSize: '16px',
+    fontWeight: '800',
+    color: 'var(--text-color)',
+    margin: '0 0 4px 0',
+  },
+  analysisSub: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    margin: '0 0 20px 0',
+  },
+  tabBar: {
+    display: 'flex',
+    gap: '12px',
+    borderBottom: '1px solid var(--border-color)',
+    marginBottom: '20px',
+    overflowX: 'auto',
+  },
+  tabButton: {
+    background: 'none',
+    border: 'none',
+    borderBottom: '3px solid transparent',
+    padding: '8px 16px 12px 16px',
+    fontSize: '14px',
+    cursor: 'pointer',
+    fontFamily: 'var(--font-family)',
+    whiteSpace: 'nowrap',
+    transition: 'all var(--transition-fast)',
+  },
+  tabContent: {
+    padding: '4px 0',
+  },
+  combinedAnalysisGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '20px',
+  },
+  individualAnalysisGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: '20px',
+  },
+  analysisItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  analysisItemLabel: {
+    fontSize: '12px',
+    fontWeight: '700',
+    color: 'var(--primary-color)',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  analysisItemValue: {
+    fontSize: '14px',
+    color: 'var(--text-color)',
+    margin: 0,
+    lineHeight: '1.5',
   },
 };

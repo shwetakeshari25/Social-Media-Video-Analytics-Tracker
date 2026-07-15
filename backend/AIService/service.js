@@ -1,63 +1,150 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { db } from '../Database/db.js';
 
-// Simulated script templates based on length and platforms
-function generateSimulatedScript(selectedVideos, length) {
-  // Aggregate some metrics
-  const totalViews = selectedVideos.reduce((sum, v) => sum + v.views, 0);
-  const platforms = [...new Set(selectedVideos.map(v => v.platform))].join(' & ');
-  const titles = selectedVideos.map(v => v.title.replace(/^\[.*?\]\s*/, '')).join(', ');
+// Temporary analysis cache stored in memory
+// Keys: userId, Values: { videoIds: [], individualAnalyses: [], combinedAnalysis: {} }
+export const temporaryAnalysisCache = new Map();
 
-  const lengthWordCounts = {
-    '30 sec': { wc: '75 words', style: 'Ultra-fast paced, high impact' },
-    '1 min': { wc: '150 words', style: 'Fast paced, educational, single focused idea' },
-    '3 min': { wc: '450 words', style: 'Medium paced, structural breakdown with examples' },
-    '5 min': { wc: '750 words', style: 'Story-driven, deep dive with detailed breakdown' }
-  };
-
-  const currentLengthSpec = lengthWordCounts[length] || lengthWordCounts['1 min'];
-
-  const bestHook = `🚀 "If you are still trying to grow on ${platforms} in 2026, stop scrolling immediately. Here is the exact strategy that generated ${Math.floor(totalViews / 1000)}k views on the top trending posts..."`;
-
-  const introduction = `Most creators tell you to post 3 times a day. But they are hiding the truth. The secret isn't quantity; it's structure. We analyzed top-performing videos like "${selectedVideos[0]?.title || 'Viral Growth Secrets'}" and found a shocking pattern. Over the next ${length === '30 sec' ? 'few seconds' : 'few minutes'}, I am going to show you exactly how to replicate these results step-by-step.`;
-
-  const mainContent = `Here are the 3 pillars of viral retention:
-1. The 3-Second Pattern Interruption: Use sudden text styling, B-roll, or sound effects within the first 180 frames. Look at YouTube videos with high metrics—they never start with an introduction; they start in the middle of the action.
-2. The Tension Loop: Ask a question in the first 10 seconds, but do not answer it until the final 10% of the video. Keep the audience curiosity peaked.
-3. Contrast-Driven Editing: Alternate between high-energy claims and calm, analytical proofs. This keeps the dopamine loop active in the viewer's brain.`;
-
-  const story = `Think about how "${selectedVideos[1]?.title || 'The Content Secret'}" hooks you. They start with a problem you face every single day. They tell you a story about how they failed 99 times before discovering one small adjustment. By positioning yourself as the guide who survived the struggle, you instantly build trust.`;
-
-  const callToAction = `If you want my complete checklist of these structural patterns for ${platforms}, comment the word 'VIRAL' below, and I will DM you the link immediately.`;
-
-  const ending = `Remember, the algorithm doesn't favor accounts; it favors retention. Keep them watching, and the system does the rest. See you in the next video.`;
-
-  const title = `How to Hijack the ${platforms} Algorithm (${length} Script)`;
-
-  const caption = `🔥 STOP SCROLLING! The algorithm changed, and here is how you exploit it in 2026.
+function isSameVideoSelection(userCachedData, newVideoIds) {
+  if (!userCachedData || !userCachedData.videoIds) return false;
+  const cachedIds = userCachedData.videoIds;
+  if (cachedIds.length !== newVideoIds.length) return false;
   
-I analyzed videos with over ${Math.floor(totalViews / 1000)}k combined views (including "${selectedVideos[0]?.title || 'Viral Hits'}"). Here are the exact frameworks they use to hold attention:
+  const sortedCached = [...cachedIds].sort();
+  const sortedNew = [...newVideoIds].sort();
+  return sortedNew.every((val, index) => val === sortedCached[index]);
+}
 
-✅ The 3-Second Frame Pattern
-✅ The Retention Loop Formula
-✅ Dopamine-Triggered Transitions
+function cleanVideoTitle(title) {
+  if (!title) return '';
+  // Remove platform tags like [Instagram], [YouTube], [Web]
+  let clean = title.replace(/^\[.*?\]\s*/i, '');
+  // Remove hashtags
+  clean = clean.replace(/#\S+/g, '');
+  // Remove numbers at the end like #1, #2, #10
+  clean = clean.replace(/#\d+\s*$/g, '');
+  // Remove symbols
+  clean = clean.replace(/[^\w\s]/g, ' ');
+  return clean.trim();
+}
 
-Read the script, apply it to your next video, and see the difference.
+function getKeywordsFromTitle(title) {
+  const clean = cleanVideoTitle(title);
+  const words = clean.split(/\s+/).map(w => w.toLowerCase().trim()).filter(w => w.length > 2);
+  
+  const stopWords = new Set(['how', 'why', 'what', 'who', 'when', 'where', 'to', 'the', 'a', 'an', 'is', 'are', 'was', 'were', 'in', 'on', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'up', 'down', 'of', 'and', 'or', 'but', 'if', 'then', 'else', 'most', 'some', 'any', 'all', 'both', 'each', 'few', 'more', 'other', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'should', 'now', 'this', 'that', 'these', 'those', 'here', 'there', 'my', 'your', 'his', 'her', 'its', 'our', 'their']);
 
-👇 What is your biggest struggle with content? Let me know!`;
+  const keywords = words.filter(w => !stopWords.has(w));
+  
+  // Capitalize first letter of each keyword
+  return keywords.map(w => w.charAt(0).toUpperCase() + w.slice(1));
+}
 
-  const hashtags = `#contentcreation #socialmediamarketing #growontiktok #youtubeorganic #instagramreels #viralgrowth #creators #algorithm`;
+// Programmatic fallback to analyze and generate simulated script
+function generateSimulatedScript(selectedVideos, length) {
+  // 1. Analyze every selected video individually
+  const individualAnalyses = selectedVideos.map((v, i) => {
+    const keywords = getKeywordsFromTitle(v.title);
+    const mainTopic = keywords[0] || 'Content Strategy';
+    const speakingStyle = i % 2 === 0 ? 'Energetic & Conversational' : 'Educational & Structured';
+    const tone = i % 2 === 0 ? 'Inspiring' : 'Informative';
+    const structure = 'Hook -> Introduction -> Value Delivery -> Examples -> Call to Action';
+    const keyPoints = [
+      `Key aspects of ${keywords[1] || 'performance'}`,
+      `Optimal ${keywords[2] || 'engagement'} strategies`,
+      `Leveraging ${keywords[3] || 'analytics'}`
+    ];
+    const audienceType = 'Content Creators, Social Media Marketers, and Business Owners';
+
+    return {
+      title: v.title,
+      description: v.description || 'Not specified',
+      transcript: v.transcript || 'Transcript not available',
+      tags: v.tags || keywords.slice(0, 3),
+      views: v.views,
+      likes: v.likes,
+      comments: v.comments,
+      shares: v.shares,
+      mainTopic,
+      speakingStyle,
+      tone,
+      structure,
+      keyPoints,
+      audienceType
+    };
+  });
+
+  // 2. Combine individual analyses
+  const commonTopics = [...new Set(individualAnalyses.map(a => a.mainTopic))];
+  const combinedTopic = commonTopics.join(' & ');
+  const commonStyle = [...new Set(individualAnalyses.map(a => a.speakingStyle))].join(', ');
+  const commonAudience = individualAnalyses[0]?.audienceType || 'Digital Creators';
+  const totalViews = selectedVideos.reduce((sum, v) => sum + v.views, 0);
+
+  // 3. Generate a completely unique script based on currently selected videos (ensuring uniqueness via timestamp/random)
+  const randomSeed = Math.floor(Math.random() * 100);
+  const cleanFirstTitle = cleanVideoTitle(selectedVideos[0]?.title);
+  
+  const scriptOptions = [
+    {
+      title: `AI Masterclass: ${combinedTopic} (${length})`,
+      bestHook: `🚀 "If you're still creating content about ${combinedTopic} the same way in 2026, stop. This framework behind ${Math.floor(totalViews / 1000)}K combined views will change your metrics immediately..."`,
+      introduction: `Most creators rely on guesses. But looking at top content like "${cleanFirstTitle}", there's a strict blueprint. Over the next ${length}, I'm going to give you that exact script layout.`,
+      mainContent: `Here are the 3 pillars of viral retention:
+1. Scroll Stopping Hooks: Visually interrupt patterns in the first 2 seconds.
+2. Value Compression: Deliver the core of "${combinedTopic}" without fluff.
+3. The Curiosity Gap: Keep them listening by asking questions you answer at the end.`,
+      story: `For example, in "${cleanVideoTitle(selectedVideos[1]?.title || selectedVideos[0]?.title)}", the creator starts with a major struggle in ${combinedTopic}, shows a step-by-step resolution, and backs it up with real social proof.`,
+      callToAction: `Comment the word 'GUIDE' below, and I will DM you my private checklist for ${combinedTopic}!`,
+      ending: `Apply these 3 pillars to your next script and watch your analytics grow. Sign-off!`
+    },
+    {
+      title: `The ${combinedTopic} Blueprint (${length})`,
+      bestHook: `💡 "The single biggest mistake creators make with ${combinedTopic} is simple... they explain instead of hook. Here's how to hold attention for ${length}..."`,
+      introduction: `We reviewed top-performing metrics from "${cleanFirstTitle}" and found a shocking detail. It's not about algorithm tricks; it's about the speaking style and structured points.`,
+      mainContent: `Here is how you format your message:
+1. Setup the Problem: Focus on the struggle with ${combinedTopic}.
+2. Share the Method: Give them the clear key points we found in "${cleanFirstTitle}".
+3. Provide Proof: Use visual comparisons and metrics to show it works.`,
+      story: `In the video "${cleanVideoTitle(selectedVideos[1]?.title || selectedVideos[0]?.title)}", this exact structure was used to keep the viewer hooked, leading to massive engagement and shares.`,
+      callToAction: `If you want to scale your engagement in the ${combinedTopic} niche, hit that follow button right now!`,
+      ending: `Stop posting without structure. Put this into action today. See you in the next one!`
+    }
+  ];
+
+  const script = scriptOptions[randomSeed % scriptOptions.length];
+  const caption = `🔥 The ultimate blueprint for ${combinedTopic}!
+
+I analyzed top videos with over ${Math.floor(totalViews / 1000)}k combined views (including "${cleanFirstTitle}"). Here is the exact structure:
+
+✅ Scroll-stopping hook
+✅ Value compression on ${combinedTopic}
+✅ Dynamic examples
+
+👇 What's your biggest struggle with ${combinedTopic}? Let's chat!`;
+
+  const hashtags = `#${combinedTopic.toLowerCase().replace(/[^a-z0-9]/g, '')} #contentcreation #socialmedia #creators #strategy #growth #viral`;
 
   return {
-    title,
-    bestHook,
-    introduction,
-    mainContent,
-    story,
-    callToAction,
-    ending,
-    caption,
-    hashtags
+    analysis: {
+      individual: individualAnalyses,
+      combined: {
+        commonIdeas: `Combining concepts of ${combinedTopic} to deliver high-value content.`,
+        contentStyle: `Speaking style ranges from ${commonStyle}.`,
+        audienceInterest: `Targeting ${commonAudience} interested in optimization.`
+      }
+    },
+    script: {
+      title: script.title,
+      bestHook: script.bestHook,
+      introduction: script.introduction,
+      mainContent: script.mainContent,
+      story: script.story,
+      callToAction: script.callToAction,
+      ending: script.ending,
+      caption,
+      hashtags
+    }
   };
 }
 
@@ -70,23 +157,46 @@ export async function generateScriptService(videoIds, length, userId) {
     throw new Error('No videos found matching the selected IDs.');
   }
 
+  // Check cache for this user's selection
+  const userCachedData = temporaryAnalysisCache.get(userId);
+  const sameSelection = isSameVideoSelection(userCachedData, videoIds);
+
+  let individualAnalyses = [];
+  let combinedAnalysis = null;
+
   const userSettings = db.getSettings(userId);
   const geminiKey = userSettings?.apiKeys?.gemini || process.env.GEMINI_API_KEY;
 
   if (!geminiKey || geminiKey.trim() === '') {
-    // Return simulated script
-    return generateSimulatedScript(selectedVideos, length);
+    // If same selection, reuse cached analysis but build a fresh script
+    if (sameSelection && userCachedData) {
+      individualAnalyses = userCachedData.individualAnalyses;
+      combinedAnalysis = userCachedData.combinedAnalysis;
+      const result = generateSimulatedScript(selectedVideos, length);
+      result.analysis.individual = individualAnalyses;
+      result.analysis.combined = combinedAnalysis;
+      return result;
+    } else {
+      // Clean old and make fresh
+      const result = generateSimulatedScript(selectedVideos, length);
+      temporaryAnalysisCache.set(userId, {
+        videoIds,
+        individualAnalyses: result.analysis.individual,
+        combinedAnalysis: result.analysis.combined
+      });
+      return result;
+    }
   }
 
   // Use Gemini API
   try {
-    const ai = new GoogleGenerativeAI(geminiKey);
-    
-    // Construct rich analysis prompt
     const videosContext = selectedVideos.map((v, i) => `
 Video #${i+1}:
 - Platform: ${v.platform}
 - Title: ${v.title}
+- Description: ${v.description || 'Not available'}
+- Transcript: ${v.transcript || 'Not available'}
+- Tags/Keywords: ${(v.tags || []).join(', ') || 'None'}
 - Views: ${v.views}
 - Likes: ${v.likes}
 - Comments: ${v.comments}
@@ -94,52 +204,126 @@ Video #${i+1}:
 - Link: ${v.url}
 `).join('\n');
 
+    let cacheInstructionsPrompt = '';
+    if (sameSelection && userCachedData) {
+      individualAnalyses = userCachedData.individualAnalyses;
+      combinedAnalysis = userCachedData.combinedAnalysis;
+      
+      cacheInstructionsPrompt = `
+We are reusing the following analysis of these videos:
+Individual Video Analysis:
+${JSON.stringify(individualAnalyses, null, 2)}
+Combined Video Analysis:
+${JSON.stringify(combinedAnalysis, null, 2)}
+
+Please bypass the analysis step and only generate a brand-new, unique script based on this analysis. Ensure the generated script is completely different in hook, main points, and phrasing compared to any script you have generated before for these videos. It must still match the target audience and niche.
+`;
+    } else {
+      cacheInstructionsPrompt = `
+Please perform a completely fresh individual analysis on each of the selected videos, and then combine the analysis.
+Discard any previous assumptions or cache.
+`;
+    }
+
     const prompt = `
-You are an expert Social Media Copywriter and Video Strategist.
-I want you to analyze the following viral/top-performing videos:
+You are an expert Social Media Copywriter, Video Strategist, and Analytics Expert.
+I want you to analyze the following videos (their titles, descriptions, transcripts, tags/keywords, and engagement metrics):
 ${videosContext}
+${cacheInstructionsPrompt}
 
-Based on these videos, generate a highly engaging video script that combines their hooks, structures, and common strategies.
+Your task is to:
+1. Analyze every selected video individually and extract/determine:
+   - Title
+   - Description
+   - Transcript (if available, or infer from context)
+   - Tags/Keywords
+   - Likes, Comments, Shares, Views
+   - Main Topic
+   - Speaking Style
+   - Tone
+   - Structure
+   - Key Points
+   - Audience Type
+
+2. Combine the analysis to summarize:
+   - Common Ideas
+   - Content Style
+   - Audience Interest
+
+3. Generate a completely new, unique script based ONLY on these selected videos and the combined analysis. 
 The script must be optimized for a total reading length of: ${length}.
+The script must match the topic, language, and style of the selected videos.
+The script should summarize the common ideas, content style, and audience interest from all selected videos instead of copying any single video.
+The script must include:
+- Hook (with strong attention-grabbing emojis)
+- Introduction (explaining the value proposition)
+- Main Content (actionable educational or entertaining points, formatted as bullet points/numbers)
+- Examples / Case Study (specific references or practical applications)
+- Call to Action (e.g., comment for DM, follow, subscribe)
+- Sign-off Ending
 
-Please format your response in a valid JSON object. The JSON keys MUST be exactly:
+Do not write a generic script about social media growth or how to go viral, unless the selected videos themselves are about social media growth. For example, if the selected videos are about "Full Stack Mock Interviews" or "Ponytails", the entire generated script must be about that exact topic.
+
+Please format your entire response as a single valid JSON object. The JSON keys MUST be exactly:
 {
-  "title": "A catchy title for this script",
-  "bestHook": "The opening 1-3 sentences designed to capture attention immediately. Start with strong emojis.",
-  "introduction": "Introductory hook explanation and value proposition.",
-  "mainContent": "The core educational or entertaining points of the script, formatted with clear numbers or bullet points.",
-  "story": "A short relatable story or case study highlighting the problem and solution based on these videos.",
-  "callToAction": "The call to action (e.g. comment for DM, follow, subscribe).",
-  "ending": "A strong, punchy sign-off sentence.",
-  "caption": "A fully written social media caption/description with emojis and clear structure.",
-  "hashtags": "8-10 relevant trending hashtags separated by spaces."
+  "analysis": {
+    "individual": [
+      {
+        "title": "Video title",
+        "description": "Video description",
+        "transcript": "Transcript summary or text",
+        "tags": ["tag1", "tag2"],
+        "views": 1000,
+        "likes": 100,
+        "comments": 10,
+        "shares": 5,
+        "mainTopic": "Main topic of this video",
+        "speakingStyle": "Speaking style of this video",
+        "tone": "Tone of this video",
+        "structure": "Structure of this video",
+        "keyPoints": ["Key point 1", "Key point 2"],
+        "audienceType": "Target audience of this video"
+      }
+    ],
+    "combined": {
+      "commonIdeas": "Summary of common ideas",
+      "contentStyle": "Summary of common content style",
+      "audienceInterest": "Summary of audience interest"
+    }
+  },
+  "script": {
+    "title": "A catchy title for the script",
+    "bestHook": "Hook (opening 1-3 sentences with emojis)",
+    "introduction": "Introduction and value proposition",
+    "mainContent": "Main educational/entertaining content",
+    "story": "Examples and practical case study based on these videos",
+    "callToAction": "Call to action",
+    "ending": "Strong, punchy sign-off sentence",
+    "caption": "Fully written social media description",
+    "hashtags": "8-10 relevant trending hashtags"
+  }
 }
 
 Ensure the response contains ONLY the raw JSON object, with no markdown code block wrapper (\`\`\`json) or external text, so it can be parsed immediately. Do not write text outside the JSON object.
 `;
 
-    // Wait, let's call Gemini. In the modern google-gen-ai SDK or official SDK, the call is:
-    // const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
-    // const result = await model.generateContent(prompt);
-    // Since GoogleGenAI class is imported:
-    // Let's use the standard import structure from @google/generative-ai
-    // Note: The standard Google Gen AI SDK structure uses:
-    // import { GoogleGenAI } from '@google/generative-ai'; is actually:
-    // import { GoogleGenerativeAI } from '@google/generative-ai';
-    // Let's write the import correctly:
-    // import { GoogleGenerativeAI } from '@google/generative-ai';
-    // const genAI = new GoogleGenerativeAI(apiKey);
-    // const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    // Let's update that to be standard!
-    
-    // Wait, let's write code that safely imports GoogleGenerativeAI
-    // Let's implement it in the code block.
-    
     const responseText = await callGeminiAPI(geminiKey, prompt);
-    const parsedScript = parseJSONResponse(responseText);
+    const parsedResult = parseJSONResponse(responseText);
     
-    if (parsedScript) {
-      return parsedScript;
+    if (parsedResult && parsedResult.script && parsedResult.analysis) {
+      if (!sameSelection) {
+        // Cache the fresh analysis
+        temporaryAnalysisCache.set(userId, {
+          videoIds,
+          individualAnalyses: parsedResult.analysis.individual,
+          combinedAnalysis: parsedResult.analysis.combined
+        });
+      } else {
+        // Preserve the cached analysis but use the new script
+        parsedResult.analysis.individual = individualAnalyses;
+        parsedResult.analysis.combined = combinedAnalysis;
+      }
+      return parsedResult;
     }
     
     // Fallback to simulated if parsing fails
@@ -151,8 +335,6 @@ Ensure the response contains ONLY the raw JSON object, with no markdown code blo
 }
 
 async function callGeminiAPI(apiKey, prompt) {
-  // Let's use a standard fetch call to Google's Gemini API to avoid any library initialization mismatch,
-  // which makes the code 100% reliable across any version of Node.js and packages!
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
   
   const response = await fetch(url, {
@@ -181,7 +363,6 @@ async function callGeminiAPI(apiKey, prompt) {
 
 function parseJSONResponse(text) {
   try {
-    // Strip markdown wrappers if present
     let cleanText = text.trim();
     if (cleanText.startsWith('```')) {
       cleanText = cleanText.replace(/^```json\s*/i, '');

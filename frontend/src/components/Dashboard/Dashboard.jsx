@@ -11,10 +11,19 @@ export function formatMetric(num) {
   return num.toString();
 }
 
-export default function Dashboard({ videos, onDeleteVideo, onGenerateScript }) {
+export default function Dashboard({ videos, onDeleteVideo, onUpdateVideo, onGenerateScript }) {
   const [selectedIds, setSelectedIds] = useState([]);
   const [scriptLength, setScriptLength] = useState('5 min'); // Pre-selected 5 min
   const [errorMsg, setErrorMsg] = useState('');
+
+  // State for editing a video
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editViews, setEditViews] = useState('');
+  const [editLikes, setEditLikes] = useState('');
+  const [editComments, setEditComments] = useState('');
+  const [editShares, setEditShares] = useState('');
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const handleSelectToggle = (id) => {
     setErrorMsg('');
@@ -98,6 +107,21 @@ export default function Dashboard({ videos, onDeleteVideo, onGenerateScript }) {
                     <span style={{ ...styles.platformTag, backgroundColor: platformInfo.color }}>
                       {platformInfo.label}
                     </span>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditingVideo(video);
+                        setEditTitle(video.title);
+                        setEditViews(video.views.toString());
+                        setEditLikes(video.likes.toString());
+                        setEditComments(video.comments.toString());
+                        setEditShares(video.shares.toString());
+                      }}
+                      style={styles.editCardBtn}
+                      title="Edit Metrics"
+                    >
+                      ✏️
+                    </button>
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
@@ -199,6 +223,120 @@ export default function Dashboard({ videos, onDeleteVideo, onGenerateScript }) {
             </div>
           </div>
         </>
+      )}
+
+      {/* Edit Modal Overlay */}
+      {editingVideo && (
+        <div style={styles.modalOverlay} onClick={() => setEditingVideo(null)}>
+          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <h3 style={styles.modalTitle}>✏️ Edit Video Details</h3>
+            <p style={styles.modalSubtitle}>
+              Update the metrics for this video.
+              {editingVideo.platform === 'Instagram' && (
+                <span style={styles.modalTip}>
+                  <br /><strong>Note:</strong> Instagram views and shares are estimated because Instagram hides them in public HTML headers. You can enter the exact values here.
+                </span>
+              )}
+            </p>
+
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              setIsSavingEdit(true);
+              const success = await onUpdateVideo(editingVideo.id, {
+                title: editTitle.trim(),
+                views: parseInt(editViews) || 0,
+                likes: parseInt(editLikes) || 0,
+                comments: parseInt(editComments) || 0,
+                shares: parseInt(editShares) || 0
+              });
+              setIsSavingEdit(false);
+              if (success) {
+                setEditingVideo(null);
+              } else {
+                alert("Failed to update video. Please try again.");
+              }
+            }} style={styles.modalForm}>
+              
+              <div style={styles.modalFormGroup}>
+                <label style={styles.modalLabel}>Video Title</label>
+                <input
+                  type="text"
+                  required
+                  className="input-field"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+              </div>
+
+              <div style={styles.modalGrid}>
+                <div style={styles.modalFormGroup}>
+                  <label style={styles.modalLabel}>Views</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="input-field"
+                    value={editViews}
+                    onChange={(e) => setEditViews(e.target.value)}
+                  />
+                </div>
+                <div style={styles.modalFormGroup}>
+                  <label style={styles.modalLabel}>Likes</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="input-field"
+                    value={editLikes}
+                    onChange={(e) => setEditLikes(e.target.value)}
+                  />
+                </div>
+                <div style={styles.modalFormGroup}>
+                  <label style={styles.modalLabel}>Comments</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="input-field"
+                    value={editComments}
+                    onChange={(e) => setEditComments(e.target.value)}
+                  />
+                </div>
+                <div style={styles.modalFormGroup}>
+                  <label style={styles.modalLabel}>Shares</label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    className="input-field"
+                    value={editShares}
+                    onChange={(e) => setEditShares(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={styles.modalActions}>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary" 
+                  onClick={() => setEditingVideo(null)}
+                  disabled={isSavingEdit}
+                  style={styles.modalCancelBtn}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary"
+                  disabled={isSavingEdit}
+                  style={styles.modalSaveBtn}
+                >
+                  {isSavingEdit ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -453,5 +591,96 @@ const styles = {
   generateBtn: {
     padding: '12px 24px',
     boxShadow: '0 4px 12px rgba(166, 124, 82, 0.2)',
+  },
+  editCardBtn: {
+    position: 'absolute',
+    top: '12px',
+    right: '42px',
+    backgroundColor: 'rgba(62, 49, 37, 0.7)',
+    color: '#FFFDFB',
+    border: 'none',
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '10px',
+    transition: 'background-color var(--transition-fast)',
+  },
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000,
+    backdropFilter: 'blur(4px)',
+  },
+  modalContent: {
+    backgroundColor: 'var(--card-color)',
+    border: '1px solid var(--border-color)',
+    borderRadius: 'var(--radius-md)',
+    padding: '32px',
+    maxWidth: '500px',
+    width: '90%',
+    boxShadow: '0 10px 40px rgba(62, 49, 37, 0.15)',
+  },
+  modalTitle: {
+    fontSize: '20px',
+    fontWeight: '800',
+    color: 'var(--text-color)',
+    marginBottom: '8px',
+  },
+  modalSubtitle: {
+    fontSize: '13px',
+    color: 'var(--text-secondary)',
+    marginBottom: '24px',
+    lineHeight: '1.5',
+  },
+  modalTip: {
+    fontSize: '11px',
+    color: 'var(--primary-color)',
+    fontWeight: '500',
+  },
+  modalForm: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  modalFormGroup: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '6px',
+  },
+  modalGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: '16px',
+  },
+  modalLabel: {
+    fontSize: '12px',
+    fontWeight: '600',
+    color: 'var(--text-color)',
+  },
+  modalActions: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '12px',
+    marginTop: '12px',
+  },
+  modalCancelBtn: {
+    padding: '10px 20px',
+    backgroundColor: 'transparent',
+    border: '1px solid var(--border-color)',
+    color: 'var(--text-color)',
+  },
+  modalSaveBtn: {
+    padding: '10px 20px',
   },
 };

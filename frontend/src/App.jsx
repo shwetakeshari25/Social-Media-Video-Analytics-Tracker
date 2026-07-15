@@ -18,6 +18,7 @@ export default function App() {
   const [generatorLoading, setGeneratorLoading] = useState(false);
   const [generatorError, setGeneratorError] = useState('');
   const [generatedScript, setGeneratedScript] = useState(null);
+  const [generatedAnalysis, setGeneratedAnalysis] = useState(null);
   const [selectedScriptLength, setSelectedScriptLength] = useState('5 min');
   const [selectedVideoIds, setSelectedVideoIds] = useState([]);
 
@@ -148,6 +149,27 @@ export default function App() {
     }
   };
 
+  const handleUpdateVideo = async (id, updatedFields) => {
+    const token = localStorage.getItem('video_tracker_token');
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/videos/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updatedFields)
+      });
+      if (response.ok) {
+        await fetchDashboardData();
+        return true;
+      }
+    } catch (err) {
+      console.error('Failed to update video:', err);
+    }
+    return false;
+  };
+
   const handleDeleteScript = async (id) => {
     const token = localStorage.getItem('video_tracker_token');
     try {
@@ -170,6 +192,7 @@ export default function App() {
     setGeneratorLoading(true);
     setGeneratorError('');
     setGeneratedScript(null);
+    setGeneratedAnalysis(null);
     setActiveTab('script'); // Switch page tab to generator loader
 
     const token = localStorage.getItem('video_tracker_token');
@@ -189,6 +212,7 @@ export default function App() {
       }
 
       setGeneratedScript(data.scriptData);
+      setGeneratedAnalysis(data.analysisData);
       fetchDashboardData(); // Refresh history listing
     } catch (err) {
       setGeneratorError(err.message);
@@ -278,6 +302,7 @@ export default function App() {
           <Dashboard
             videos={videos}
             onDeleteVideo={handleDeleteVideo}
+            onUpdateVideo={handleUpdateVideo}
             onGenerateScript={handleGenerateScript}
           />
         )}
@@ -290,6 +315,7 @@ export default function App() {
             scriptLength={selectedScriptLength}
             onBackToDashboard={() => setActiveTab('dashboard')}
             scriptData={generatedScript}
+            analysisData={generatedAnalysis}
             loading={generatorLoading}
             error={generatorError}
           />
