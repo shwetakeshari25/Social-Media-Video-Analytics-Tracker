@@ -137,15 +137,15 @@ function extractMetricsFromDescription(description, platform) {
     let shares = 0;
     
     if (platform === 'Instagram') {
-      // Views are typically ~10x to 14x likes for reels
-      views = Math.floor(likes * (10 + Math.random() * 4)); 
-      // Shares are typically ~8% to 12% of likes
-      shares = Math.floor(likes * (0.08 + Math.random() * 0.04));
+      // Views are typically ~25x to 55x likes for reels
+      views = Math.floor(likes * (25 + Math.random() * 30)); 
+      // Shares are typically ~10% to 25% of likes
+      shares = Math.floor(likes * (0.1 + Math.random() * 0.15));
     } else if (platform === 'LinkedIn') {
-      views = Math.floor(likes * (30 + Math.random() * 10)); // Views are ~30x-40x likes
+      views = Math.floor(likes * (30 + Math.random() * 20)); // Views are ~30x-50x likes
       shares = Math.floor(likes * (0.1 + Math.random() * 0.1));
     } else {
-      views = likes * 10;
+      views = likes * 25; // YouTube / other fallback
       shares = Math.floor(likes * 0.1);
     }
 
@@ -186,6 +186,12 @@ function extractViewsFromHtml(html) {
   const ytViewCount = html.match(/\\u0026view_count=(\d+)/);
   if (ytViewCount && ytViewCount[1]) {
     return parseInt(ytViewCount[1]);
+  }
+
+  // Pattern 4: YouTube itemprop interactionCount fallback
+  const itempropMatch = html.match(/<meta\s+itemprop=["']interactionCount["']\s+content=["'](?:UserPageVisits:|UserPlaybacks:)?(\d+)["']/i);
+  if (itempropMatch && itempropMatch[1]) {
+    return parseInt(itempropMatch[1]);
   }
 
   return null;
