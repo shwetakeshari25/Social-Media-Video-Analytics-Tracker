@@ -5,6 +5,16 @@ import { db } from '../Database/db.js';
 // Keys: userId, Values: { videoIds: [], individualAnalyses: [], combinedAnalysis: {} }
 export const temporaryAnalysisCache = new Map();
 
+export function formatMetric(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+  }
+  return num.toString();
+}
+
 function isSameVideoSelection(userCachedData, newVideoIds) {
   if (!userCachedData || !userCachedData.videoIds) return false;
   const cachedIds = userCachedData.videoIds;
@@ -88,7 +98,7 @@ function generateSimulatedScript(selectedVideos, length) {
   const scriptOptions = [
     {
       title: `AI Masterclass: ${combinedTopic} (${length})`,
-      bestHook: `🚀 "If you're still creating content about ${combinedTopic} the same way in 2026, stop. This framework behind ${Math.floor(totalViews / 1000)}K combined views will change your metrics immediately..."`,
+      bestHook: `🚀 "If you're still creating content about ${combinedTopic} the same way in 2026, stop. This framework behind ${formatMetric(totalViews)} combined views will change your metrics immediately..."`,
       introduction: `Most creators rely on guesses. But looking at top content like "${cleanFirstTitle}", there's a strict blueprint. Over the next ${length}, I'm going to give you that exact script layout.`,
       mainContent: `Here are the 3 pillars of viral retention:
 1. Scroll Stopping Hooks: Visually interrupt patterns in the first 2 seconds.
@@ -115,7 +125,7 @@ function generateSimulatedScript(selectedVideos, length) {
   const script = scriptOptions[randomSeed % scriptOptions.length];
   const caption = `🔥 The ultimate blueprint for ${combinedTopic}!
 
-I analyzed top videos with over ${Math.floor(totalViews / 1000)}k combined views (including "${cleanFirstTitle}"). Here is the exact structure:
+I analyzed top videos with over ${formatMetric(totalViews)} combined views (including "${cleanFirstTitle}"). Here is the exact structure:
 
 ✅ Scroll-stopping hook
 ✅ Value compression on ${combinedTopic}
@@ -197,10 +207,10 @@ Video #${i+1}:
 - Description: ${v.description || 'Not available'}
 - Transcript: ${v.transcript || 'Not available'}
 - Tags/Keywords: ${(v.tags || []).join(', ') || 'None'}
-- Views: ${v.views}
-- Likes: ${v.likes}
-- Comments: ${v.comments}
-- Shares: ${v.shares}
+- Views: ${formatMetric(v.views)} (${v.views} views raw)
+- Likes: ${formatMetric(v.likes)} (${v.likes} likes raw)
+- Comments: ${formatMetric(v.comments)} (${v.comments} comments raw)
+- Shares: ${formatMetric(v.shares)} (${v.shares} shares raw)
 - Link: ${v.url}
 `).join('\n');
 
@@ -311,6 +321,19 @@ Ensure the response contains ONLY the raw JSON object, with no markdown code blo
     const parsedResult = parseJSONResponse(responseText);
     
     if (parsedResult && parsedResult.script && parsedResult.analysis) {
+      // Overwrite individual analyses metrics with exact database values to prevent discrepancies/hallucinations
+      if (parsedResult.analysis.individual && Array.isArray(parsedResult.analysis.individual)) {
+        parsedResult.analysis.individual.forEach((ind, idx) => {
+          const originalVideo = selectedVideos[idx];
+          if (originalVideo) {
+            ind.views = originalVideo.views;
+            ind.likes = originalVideo.likes;
+            ind.comments = originalVideo.comments;
+            ind.shares = originalVideo.shares;
+          }
+        });
+      }
+
       if (!sameSelection) {
         // Cache the fresh analysis
         temporaryAnalysisCache.set(userId, {

@@ -334,6 +334,22 @@ ${scriptData.hashtags}
                     <p style={styles.analysisItemValue}>{video.structure}</p>
                   </div>
                   <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Views</span>
+                    <p style={{ ...styles.analysisItemValue, fontWeight: '700' }}>{video.views ? Number(video.views).toLocaleString() : '0'}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Likes</span>
+                    <p style={styles.analysisItemValue}>{video.likes ? Number(video.likes).toLocaleString() : '0'}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Comments</span>
+                    <p style={styles.analysisItemValue}>{video.comments ? Number(video.comments).toLocaleString() : '0'}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
+                    <span style={styles.analysisItemLabel}>Shares</span>
+                    <p style={styles.analysisItemValue}>{video.shares ? Number(video.shares).toLocaleString() : '0'}</p>
+                  </div>
+                  <div style={styles.analysisItem}>
                     <span style={styles.analysisItemLabel}>Key Points</span>
                     <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-color)', fontSize: '14px' }}>
                       {(video.keyPoints || []).map((pt, pIdx) => (
