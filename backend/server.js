@@ -5,6 +5,8 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import apiRouter from './API/routes.js';
+import accountRouter from './API/accountRouter.js';
+import { connectDB } from './Database/mongodb.js';
 
 // Resolve directory paths in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +33,7 @@ app.get('/api/health', (req, res) => {
 
 // Mount Routes
 app.use('/api', apiRouter);
+app.use('/api/accounts', accountRouter);
 
 // Serve Frontend build folder if it exists
 const frontendBuildPath = path.join(__dirname, '../frontend/dist');
@@ -52,6 +55,9 @@ app.use((err, req, res, next) => {
   console.error('Unhandled server error:', err);
   res.status(500).json({ error: 'Internal server error occurred.' });
 });
+
+// Connect Database on Startup
+connectDB();
 
 // Start Server
 app.listen(PORT, () => {

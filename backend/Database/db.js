@@ -107,6 +107,56 @@ export const db = {
     return null;
   },
 
+  // Social Account Operations (Local Database Fallback)
+  getAccounts: (userId) => {
+    const data = readDB();
+    data.accounts = data.accounts || [];
+    return data.accounts.filter(a => a.userId === userId);
+  },
+  addAccount: (account) => {
+    const data = readDB();
+    data.accounts = data.accounts || [];
+    const newAccount = { id: Date.now().toString(), createdAt: new Date().toISOString(), ...account };
+    data.accounts.push(newAccount);
+    writeDB(data);
+    return newAccount;
+  },
+  deleteAccount: (id, userId) => {
+    const data = readDB();
+    data.accounts = data.accounts || [];
+    const index = data.accounts.findIndex(a => (a.id === id || a._id === id) && a.userId === userId);
+    if (index !== -1) {
+      const deleted = data.accounts.splice(index, 1)[0];
+      writeDB(data);
+      return deleted;
+    }
+    return null;
+  },
+  updateAccountMetrics: (id, userId, fields) => {
+    const data = readDB();
+    data.accounts = data.accounts || [];
+    const index = data.accounts.findIndex(a => (a.id === id || a._id === id) && a.userId === userId);
+    if (index !== -1) {
+      data.accounts[index] = { ...data.accounts[index], ...fields, lastUpdated: new Date().toISOString() };
+      writeDB(data);
+      return data.accounts[index];
+    }
+    return null;
+  },
+  getAccountMetrics: (accountId) => {
+    const data = readDB();
+    data.accountMetrics = data.accountMetrics || [];
+    return data.accountMetrics.filter(m => m.accountId === accountId);
+  },
+  addAccountMetric: (metric) => {
+    const data = readDB();
+    data.accountMetrics = data.accountMetrics || [];
+    const newMetric = { id: Date.now().toString(), recordedAt: new Date().toISOString(), ...metric };
+    data.accountMetrics.push(newMetric);
+    writeDB(data);
+    return newMetric;
+  },
+
   // Settings Operations
   getSettings: (userId) => {
     const settings = readDB().settings;

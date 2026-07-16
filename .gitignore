@@ -28,3 +28,8 @@ frontend/dist/
 # OS metadata files
 .DS_Store
 Thumbs.db
+
+# Scratch folder
+scratch/
+temp/
+*.log

@@ -6,6 +6,7 @@ import Compare from './components/Compare/Compare.jsx';
 import ScriptGenerator from './components/ScriptGenerator/ScriptGenerator.jsx';
 import History from './components/History/History.jsx';
 import Settings from './components/Settings/Settings.jsx';
+import AnalyticsDashboard from './components/Dashboard/AnalyticsDashboard.jsx';
 import { API_BASE_URL } from './config.js';
 
 export default function App() {
@@ -246,6 +247,7 @@ export default function App() {
           {[
             { id: 'home', label: '🏠 Home' },
             { id: 'dashboard', label: '📊 Dashboard' },
+            { id: 'social', label: '📈 Social Accounts' },
             { id: 'compare', label: '⚔️ Compare' },
             { id: 'history', label: '📜 History' },
             { id: 'settings', label: '⚙️ Settings' }
@@ -305,6 +307,9 @@ export default function App() {
             onUpdateVideo={handleUpdateVideo}
             onGenerateScript={handleGenerateScript}
           />
+        )}
+        {activeTab === 'social' && (
+          <AnalyticsDashboard />
         )}
         {activeTab === 'compare' && (
           <Compare videos={videos} />
